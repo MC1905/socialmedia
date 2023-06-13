@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
-import { Routes, Route, Link } from "react-router-dom";
-import { addDoc } from 'firebase/firestore';
+// import { addDoc } from 'firebase/firestore';
+import { signInWithGoogle } from "./firebase";
 
 
 function App() {
@@ -35,15 +35,18 @@ function App() {
 // }
 
 
-return (
-  <div className="container p-4 ">
-    <div className="row">
-      <Link/>
-      
+  return (
+    <div className="App">
+      <button class="login-with-google-btn" onClick={signInWithGoogle}>
+        Sign in with Google
+      </button>
+      <h1>{localStorage.getItem("name")}</h1>
+      <h1>{localStorage.getItem("email")}</h1>
+      <img src={localStorage.getItem("profilePic")} />
     </div>
-    <ToastContainer/>
-  </div>
-);
+  );
 }
+
+
 
 export default App;
