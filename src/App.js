@@ -3,6 +3,9 @@ import './App.css';
 import { useState } from 'react';
 // import { addDoc } from 'firebase/firestore';
 import { signInWithGoogle } from "./firebase";
+import SignIn from './components/auth/SignIn';
+import SignUp from './components/auth/SignUp';
+import AuthDetails from './components/AuthDetails';
 
 
 function App() {
@@ -33,6 +36,10 @@ function App() {
   
 //     }
 // }
+  const logout =()=>{
+    localStorage.clear()
+    window.location.reload()
+  }
 
 
   return (
@@ -43,7 +50,19 @@ function App() {
       <h1>{localStorage.getItem("name")}</h1>
       <h1>{localStorage.getItem("email")}</h1>
       <img src={localStorage.getItem("profilePic")} />
+      <button onClick={logout}>Logout</button>
+      
+      <div className="App">
+      <SignIn />
+      <SignUp />
+      <AuthDetails />
     </div>
+
+    </div>
+
+    
+
+    
   );
 }
 
