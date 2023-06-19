@@ -47,6 +47,9 @@ function App() {
       <button class="login-with-google-btn" onClick={signInWithGoogle}>
         Sign in with Google
       </button>
+
+        <button onClick={AuthDetails.toevoegenDoc}>Toevoegen</button>
+
       <h1>{localStorage.getItem("name")}</h1>
       <h1>{localStorage.getItem("email")}</h1>
       <img src={localStorage.getItem("profilePic")} />
@@ -56,7 +59,10 @@ function App() {
       <SignIn />
       <SignUp />
       <AuthDetails />
+
     </div>
+
+    
 
     </div>
 
@@ -64,6 +70,22 @@ function App() {
 
     
   );
+  const [user, setUser] = useState(null);
+  const [posts, setPosts] = useState([]);
+  const [userid, setId] = useState([]);
+  const [title, setTitle] = useState([]);
+  const [desc, setDesc] = useState([]);
+  const [date, setDate] = useState([]);
+  const [postid, setPostid] = useState();
+
+  const toevoegenDoc = async () => {
+    await addDoc(collection(db, "posts"), {
+      title: title,
+      desc: desc,
+      uid: userid,
+    });
+
+  };
 }
 
 
