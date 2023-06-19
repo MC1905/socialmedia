@@ -1,11 +1,13 @@
 import logo from './logo.svg';
 import './App.css';
-import { useState } from 'react';
+import {useEffect, useState } from "react";
 // import { addDoc } from 'firebase/firestore';
 import { signInWithGoogle } from "./firebase";
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/AuthDetails';
+import {getDocs,collection,addDoc} from "firebase/firestore";
+import { db } from "./firebase";
 
 
 function App() {
