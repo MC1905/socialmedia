@@ -5,6 +5,7 @@ import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/AuthDetails';
 import { collection, addDoc, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { db } from "./firebase";
+import './App.css';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -49,18 +50,16 @@ function App() {
   };
 
   useEffect(() => {
-    if (user) {
-      const unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
-        const postsData = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setPosts(postsData);
-      });
+    const unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
+      const postsData = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPosts(postsData);
+    });
 
-      return () => unsubscribe();
-    }
-  }, [user]);
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="App">
@@ -90,21 +89,21 @@ function App() {
             />
             <button onClick={handleAddPost}>Add Post</button>
           </div>
-
-          <h2>Posts:</h2>
-          <ul>
-            {posts.map((post) => (
-              <li key={post.id}>
-                <h3>{post.title}</h3>
-                <p>{post.desc}</p>
-                {post.uid === user.uid && (
-                  <button onClick={() => handleDeletePost(post.id)}>Delete</button>
-                )}
-              </li>
-            ))}
-          </ul>
         </div>
       )}
+
+      <h2>Posts:</h2>
+      <ul>
+        {posts.map((post) => (
+          <li key={post.id} className="post">
+            <h3>{post.title}</h3>
+            <p>{post.desc}</p>
+            {user && post.uid === user.uid && (
+              <button className="delete-btn" onClick={() => handleDeletePost(post.id)}>Delete</button>
+            )}
+          </li>
+        ))}
+      </ul>
 
       <div className="App">
         <SignIn />
