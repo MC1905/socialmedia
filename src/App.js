@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { signInWithGoogle } from "./firebase";
+import { signInWithGoogle, signInWithEmailPassword } from "./firebase";
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/AuthDetails';
@@ -18,6 +18,16 @@ function App() {
   const handleSignInWithGoogle = async () => {
     try {
       const userCredential = await signInWithGoogle();
+      const user = userCredential.user;
+      setUser(user);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSignInWithEmailPassword = async (email, password) => {
+    try {
+      const userCredential = await signInWithEmailPassword(email, password);
       const user = userCredential.user;
       setUser(user);
     } catch (error) {
@@ -83,13 +93,16 @@ function App() {
   return (
     <div className="App">
       {!user ? (
-        <div className="login-container">
-          <button className="login-with-google-btn" onClick={handleSignInWithGoogle}>
-            Sign in with Google
-          </button>
+        <div>
+          <div className="login-options">
+            <button className="login-with-google-btn" onClick={handleSignInWithGoogle}>
+              Sign in with Google
+            </button>
+            <SignIn onSignIn={handleSignInWithEmailPassword} />
+          </div>
 
           <h2>Posts:</h2>
-          <ul className="post-list">
+          <ul>
             {posts.map((post) => (
               !post.private && (
                 <li key={post.id} className="post">
@@ -142,7 +155,7 @@ function App() {
           </div>
 
           <h2>Posts:</h2>
-          <ul className="post-list">
+          <ul>
             {posts.map((post) => (
               (post.private && post.uid === user.uid) || !post.private ? (
                 <li key={post.id} className="post">
@@ -159,7 +172,6 @@ function App() {
       )}
 
       <div className="App">
-        <SignIn />
         <SignUp />
         <AuthDetails />
       </div>
