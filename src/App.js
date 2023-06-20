@@ -3,7 +3,7 @@ import { signInWithGoogle } from "./firebase";
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/AuthDetails';
-import { collection, addDoc, onSnapshot } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, deleteDoc, doc } from "firebase/firestore";
 import { db } from "./firebase";
 
 function App() {
@@ -35,6 +35,14 @@ function App() {
       });
       setTitle("");
       setDesc("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await deleteDoc(doc(db, "posts", postId));
     } catch (error) {
       console.log(error);
     }
@@ -89,6 +97,9 @@ function App() {
               <li key={post.id}>
                 <h3>{post.title}</h3>
                 <p>{post.desc}</p>
+                {post.uid === user.uid && (
+                  <button onClick={() => handleDeletePost(post.id)}>Delete</button>
+                )}
               </li>
             ))}
           </ul>
