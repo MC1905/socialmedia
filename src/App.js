@@ -3,7 +3,7 @@ import { signInWithGoogle } from "./firebase";
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/AuthDetails';
-import { collection, addDoc, onSnapshot, deleteDoc, doc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot, deleteDoc, doc, query, where, getDocs } from "firebase/firestore";
 import { db } from "./firebase";
 import './App.css';
 
@@ -12,6 +12,7 @@ function App() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [posts, setPosts] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleSignInWithGoogle = async () => {
     try {
@@ -44,6 +45,21 @@ function App() {
   const handleDeletePost = async (postId) => {
     try {
       await deleteDoc(doc(db, "posts", postId));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSearch = async () => {
+    try {
+      const postsRef = collection(db, "posts");
+      const q = query(postsRef, where("title", ">=", searchTerm));
+      const querySnapshot = await getDocs(q);
+      const postsData = querySnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setPosts(postsData);
     } catch (error) {
       console.log(error);
     }
@@ -89,21 +105,31 @@ function App() {
             />
             <button onClick={handleAddPost}>Add Post</button>
           </div>
+
+          <div className="search">
+            <input
+              type="text"
+              placeholder="Search by title"
+              value={searchTerm}
+              onChange={(event) => setSearchTerm(event.target.value)}
+            />
+            <button onClick={handleSearch}>Search</button>
+          </div>
+
+          <h2>Posts:</h2>
+          <ul>
+            {posts.map((post) => (
+              <li key={post.id} className="post">
+                <h3>{post.title}</h3>
+                <p>{post.desc}</p>
+                {user && post.uid === user.uid && (
+                  <button className="delete-btn" onClick={() => handleDeletePost(post.id)}>Delete</button>
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
-
-      <h2>Posts:</h2>
-      <ul>
-        {posts.map((post) => (
-          <li key={post.id} className="post">
-            <h3>{post.title}</h3>
-            <p>{post.desc}</p>
-            {user && post.uid === user.uid && (
-              <button className="delete-btn" onClick={() => handleDeletePost(post.id)}>Delete</button>
-            )}
-          </li>
-        ))}
-      </ul>
 
       <div className="App">
         <SignIn />
