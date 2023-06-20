@@ -13,6 +13,7 @@ function App() {
   const [desc, setDesc] = useState("");
   const [posts, setPosts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [privatePost, setPrivatePost] = useState(false);
 
   const handleSignInWithGoogle = async () => {
     try {
@@ -34,9 +35,11 @@ function App() {
         title: title,
         desc: desc,
         uid: user.uid,
+        private: privatePost,
       });
       setTitle("");
       setDesc("");
+      setPrivatePost(false);
     } catch (error) {
       console.log(error);
     }
@@ -88,10 +91,12 @@ function App() {
           <h2>Posts:</h2>
           <ul>
             {posts.map((post) => (
-              <li key={post.id} className="post">
-                <h3>{post.title}</h3>
-                <p>{post.desc}</p>
-              </li>
+              !post.private && (
+                <li key={post.id} className="post">
+                  <h3>{post.title}</h3>
+                  <p>{post.desc}</p>
+                </li>
+              )
             ))}
           </ul>
         </div>
@@ -115,6 +120,14 @@ function App() {
               value={desc}
               onChange={(event) => setDesc(event.target.value)}
             />
+            <label>
+              Private:
+              <input
+                type="checkbox"
+                checked={privatePost}
+                onChange={(event) => setPrivatePost(event.target.checked)}
+              />
+            </label>
             <button onClick={handleAddPost}>Add Post</button>
           </div>
 
@@ -131,13 +144,15 @@ function App() {
           <h2>Posts:</h2>
           <ul>
             {posts.map((post) => (
-              <li key={post.id} className="post">
-                <h3>{post.title}</h3>
-                <p>{post.desc}</p>
-                {user && post.uid === user.uid && (
-                  <button className="delete-btn" onClick={() => handleDeletePost(post.id)}>Delete</button>
-                )}
-              </li>
+              (post.private && post.uid === user.uid) || !post.private ? (
+                <li key={post.id} className="post">
+                  <h3>{post.title}</h3>
+                  <p>{post.desc}</p>
+                  {user && post.uid === user.uid && (
+                    <button className="delete-btn" onClick={() => handleDeletePost(post.id)}>Delete</button>
+                  )}
+                </li>
+              ) : null
             ))}
           </ul>
         </div>
