@@ -80,9 +80,21 @@ function App() {
   return (
     <div className="App">
       {!user ? (
-        <button className="login-with-google-btn" onClick={handleSignInWithGoogle}>
-          Sign in with Google
-        </button>
+        <div>
+          <button className="login-with-google-btn" onClick={handleSignInWithGoogle}>
+            Sign in with Google
+          </button>
+
+          <h2>Posts:</h2>
+          <ul>
+            {posts.map((post) => (
+              <li key={post.id} className="post">
+                <h3>{post.title}</h3>
+                <p>{post.desc}</p>
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : (
         <div>
           <h1>{user.displayName}</h1>
