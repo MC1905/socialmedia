@@ -83,13 +83,13 @@ function App() {
   return (
     <div className="App">
       {!user ? (
-        <div>
+        <div className="login-container">
           <button className="login-with-google-btn" onClick={handleSignInWithGoogle}>
             Sign in with Google
           </button>
 
           <h2>Posts:</h2>
-          <ul>
+          <ul className="post-list">
             {posts.map((post) => (
               !post.private && (
                 <li key={post.id} className="post">
@@ -142,7 +142,7 @@ function App() {
           </div>
 
           <h2>Posts:</h2>
-          <ul>
+          <ul className="post-list">
             {posts.map((post) => (
               (post.private && post.uid === user.uid) || !post.private ? (
                 <li key={post.id} className="post">
