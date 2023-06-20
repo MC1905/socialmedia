@@ -3,7 +3,7 @@ import { signInWithGoogle } from "./firebase";
 import SignIn from './components/auth/SignIn';
 import SignUp from './components/auth/SignUp';
 import AuthDetails from './components/AuthDetails';
-import { collection, addDoc } from "firebase/firestore";
+import { collection, addDoc, onSnapshot } from "firebase/firestore";
 import { db } from "./firebase";
 
 function App() {
@@ -15,10 +15,7 @@ function App() {
   const handleSignInWithGoogle = async () => {
     try {
       const userCredential = await signInWithGoogle();
-      console.log(userCredential)
       const user = userCredential.user;
-      console.log("Ik heb deze user:");
-      console.log(user);
       setUser(user);
     } catch (error) {
       console.log(error);
@@ -43,19 +40,19 @@ function App() {
     }
   };
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const unsubscribe = collection(db, "posts").onSnapshot((snapshot) => {
-  //       const postsData = snapshot.docs.map((doc) => ({
-  //         id: doc.id,
-  //         ...doc.data(),
-  //       }));
-  //       setPosts(postsData);
-  //     });
+  useEffect(() => {
+    if (user) {
+      const unsubscribe = onSnapshot(collection(db, "posts"), (snapshot) => {
+        const postsData = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setPosts(postsData);
+      });
 
-  //     return () => unsubscribe();
-  //   }
-  // }, [user]);
+      return () => unsubscribe();
+    }
+  }, [user]);
 
   return (
     <div className="App">
