@@ -92,6 +92,9 @@ function App() {
 
   return (
     <div className="App">
+      <header className="header">
+      <h1>The Newer Reddit</h1>
+    </header>
       {!user ? (
         <div>
           <div className="login-options">
