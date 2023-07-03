@@ -93,7 +93,7 @@ function App() {
   return (
     <div className="App">
       <header className="header">
-      <h1>The Newer Reddit</h1>
+      <h4>The Newer Reddit</h4>
     </header>
       {!user ? (
         <div>
@@ -118,9 +118,9 @@ function App() {
         </div>
       ) : (
         <div>
-          <h1>{user.displayName}</h1>
-          <h1>{user.email}</h1>
-          <img src={user.photoURL} alt="Profile" />
+          <h1>{user.displayName}</h1> <br />
+          <h1>{user.email}</h1> <br />
+          <img src={user.photoURL} alt="Profile" /> <br />
           <button onClick={handleLogout}>Logout</button>
 
           <div className="add">
@@ -129,23 +129,23 @@ function App() {
               placeholder="Title"
               value={title}
               onChange={(event) => setTitle(event.target.value)}
-            />
+            /> <br />
             <input
               type="text"
               placeholder="Desc"
               value={desc}
               onChange={(event) => setDesc(event.target.value)}
-            />
+            /> <br />
             <label>
               Private:
               <input
                 type="checkbox"
                 checked={privatePost}
                 onChange={(event) => setPrivatePost(event.target.checked)}
-              />
+              /> <br />
             </label>
             <button onClick={handleAddPost}>Add Post</button>
-          </div>
+          </div> <br />
 
           <div className="search">
             <input
@@ -155,7 +155,7 @@ function App() {
               onChange={(event) => setSearchTerm(event.target.value)}
             />
             <button onClick={handleSearch}>Search</button>
-          </div>
+          </div> <br />
 
           <h2>Posts:</h2>
           <ul>

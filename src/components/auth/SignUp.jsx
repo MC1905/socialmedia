@@ -1,6 +1,7 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import React, { useState } from "react";
 import { auth } from "../../firebase";
+import "../../App.css";
 
 const SignUp = () => {
   const [email, setEmail] = useState("");
@@ -26,13 +27,13 @@ const SignUp = () => {
           placeholder="Enter your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-        ></input>
+        ></input> <br /> <br />
         <input
           type="password"
           placeholder="Enter your password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-        ></input>
+        ></input> <br /> <br />
         <button type="submit">Sign Up</button>
       </form>
     </div>
